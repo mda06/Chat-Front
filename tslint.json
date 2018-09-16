@@ -11,9 +11,6 @@
       "check-space"
     ],
     "curly": true,
-    "deprecation": {
-      "severity": "warn"
-    },
     "eofline": true,
     "forin": true,
     "import-blacklist": [
@@ -107,6 +104,7 @@
         "variable-declaration": "nospace"
       }
     ],
+    "typeof-compare": true,
     "unified-signatures": true,
     "variable-name": false,
     "whitespace": [
@@ -129,6 +127,7 @@
       "app",
       "kebab-case"
     ],
+    "angular-whitespace": [true, "check-interpolation"],
     "no-output-on-prefix": true,
     "use-input-property-decorator": true,
     "use-output-property-decorator": true,
