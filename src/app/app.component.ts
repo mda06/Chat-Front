@@ -19,6 +19,15 @@ export class AppComponent {
     this.chatService.receivedMessage$.subscribe(msg => {
       this.messages.push(msg);
     });
+    this.chatService.loginMessage$.subscribe(participant => {
+      console.log(participant);
+    });
+    this.chatService.logoutMessage$.subscribe(participant => {
+      console.log(participant);
+    });
+    this.chatService.participants$.subscribe(participants => {
+      console.log(participants);
+    });
   }
 
   onSendMessage() {
