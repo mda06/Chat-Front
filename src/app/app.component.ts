@@ -28,6 +28,7 @@ export class AppComponent {
     this.chatService.participants$.subscribe(participants => {
       console.log(participants);
     });
+    this.chatService.participantUpdate$.subscribe(participant => console.log(participant));
   }
 
   onSendMessage() {

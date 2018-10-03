@@ -9,6 +9,7 @@ export class ChatService {
   // Basic vars
   private serverUrl = 'http://localhost:8080/socket';
   private stompClient;
+  private _sessionId: string;
   // Events
   private receivedMessage = new ReplaySubject<any>();
   receivedMessage$ = this.receivedMessage.asObservable();
@@ -18,6 +19,8 @@ export class ChatService {
   logoutMessage$ = this.logoutMessage.asObservable();
   private participants = new ReplaySubject<Array<ChatParticipant>>();
   participants$ = this.participants.asObservable();
+  private participantUpdate = new ReplaySubject<Array<ChatParticipant>>();
+  participantUpdate$ = this.participantUpdate.asObservable();
 
   constructor() {
   }
@@ -27,9 +30,9 @@ export class ChatService {
     this.stompClient = Stomp.over(ws);
     const that = this;
     this.stompClient.connect({}, function(_) {
-      console.log('Connected successfully');
+      that._sessionId = /\/([^\/]+)\/websocket/.exec(ws._transport.url)[1];
+      console.log('Connected as ', that._sessionId);
       that.initReceivedMessages();
-      that.initLogins();
       that.initParticipants();
     });
   }
@@ -43,22 +46,24 @@ export class ChatService {
   }
 
   private initParticipants() {
-    this.stompClient.subscribe('/app/participants', msg => {
+    this.stompClient.subscribe('/app/participant/all', msg => {
       if (msg.body) {
         this.participants.next(JSON.parse(msg.body));
       }
     });
-  }
-
-  private initLogins() {
-    this.stompClient.subscribe('/chat/login', (msg) => {
+    this.stompClient.subscribe('/participant/login', (msg) => {
       if (msg.body) {
         this.loginMessage.next(JSON.parse(msg.body));
       }
     });
-    this.stompClient.subscribe('/chat/logout', (msg) => {
+    this.stompClient.subscribe('/participant/logout', (msg) => {
       if (msg.body) {
         this.logoutMessage.next(JSON.parse(msg.body));
+      }
+    });
+    this.stompClient.subscribe('/participant/update', msg => {
+      if (msg.body) {
+        this.participantUpdate.next(JSON.parse(msg.body));
       }
     });
   }
@@ -67,4 +72,13 @@ export class ChatService {
     this.stompClient.send('/app/send/message' , {}, msg);
   }
 
+  notifyParticipantUpdate(chatParticipant: ChatParticipant) {
+    console.log('Sending udate');
+    console.log(chatParticipant);
+    this.stompClient.send('/app/participant/update', {}, JSON.stringify(chatParticipant));
+  }
+
+  get sessionId(): string {
+    return this._sessionId;
+  }
 }
