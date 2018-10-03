@@ -5,8 +5,7 @@
     <input type="text" [(ngModel)]="messageToSend" name="message">
     <button (click)="onSendMessage()">Send message</button>
   </form>
-  <h2>Settings</h2>
+  <app-room *ngIf="selectedRoom" [room]="selectedRoom"></app-room>
   <app-user-settings></app-user-settings>
-  <h2>Participants</h2>
   <app-participant></app-participant>
 </div>

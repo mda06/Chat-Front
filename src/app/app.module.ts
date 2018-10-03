@@ -7,6 +7,7 @@ import { UserSettingsComponent } from './user-settings/user-settings.component';
 import { ParticipantComponent } from './participant/participant.component';
 import { ConnectingComponent } from './connecting/connecting.component';
 import { ConnectedComponent } from './connected/connected.component';
+import { RoomComponent } from './room/room.component';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import { ConnectedComponent } from './connected/connected.component';
     UserSettingsComponent,
     ParticipantComponent,
     ConnectingComponent,
-    ConnectedComponent
+    ConnectedComponent,
+    RoomComponent
   ],
   imports: [
     BrowserModule,

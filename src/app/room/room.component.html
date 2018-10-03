@@ -1,0 +1,4 @@
+<div *ngIf="room">
+  <h3>{{ room.name }}</h3>
+  <p *ngFor="let message of room.messages"> {{ message.username + ' say ' + message.message }} </p>
+</div>

@@ -4,6 +4,9 @@ import * as SockJS from 'sockjs-client';
 import {ReplaySubject} from 'rxjs/ReplaySubject';
 import {ChatParticipant} from '../dto/chat-participant';
 import {ChatMessage} from '../dto/chat-message';
+import {Subject} from 'rxjs/Subject';
+import {Observable} from 'rxjs/Observable';
+import {Room} from '../dto/room';
 
 @Injectable()
 export class ChatService {
@@ -67,6 +70,10 @@ export class ChatService {
         this.participantUpdate.next(JSON.parse(msg.body));
       }
     });
+  }
+
+  subscribeToRoom(roomId: number): Observable<Room> {
+    return this.stompClient.subscribe('/room/id' + roomId);
   }
 
   sendMessage(msg: string) {
