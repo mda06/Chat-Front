@@ -10,6 +10,6 @@ import {ChatParticipant} from './dto/chat-participant';
 })
 export class AppComponent {
   constructor(public chatService: ChatService) {
-    //this.chatService.connect();
+    this.chatService.connect();
   }
 }
