@@ -4,11 +4,13 @@ import { AppComponent } from './app.component';
 import { FormsModule } from '@angular/forms';
 import {ChatService} from './service/chat.service';
 import { UserSettingsComponent } from './user-settings/user-settings.component';
+import { ParticipantComponent } from './participant/participant.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    UserSettingsComponent
+    UserSettingsComponent,
+    ParticipantComponent
   ],
   imports: [
     BrowserModule,

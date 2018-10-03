@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import {ChatService} from './service/chat.service';
+import {ChatMessage} from './dto/chat-message';
+import {ChatParticipant} from './dto/chat-participant';
 
 @Component({
   selector: 'app-root',
@@ -8,7 +10,8 @@ import {ChatService} from './service/chat.service';
 })
 export class AppComponent {
   private messageToSend = '';
-  private messages: Array<string> = [];
+  private messages: Array<ChatMessage> = [];
+  private participants: Array<ChatParticipant> = [];
 
   constructor(private chatService: ChatService) {
     this.initChat();
@@ -20,15 +23,20 @@ export class AppComponent {
       this.messages.push(msg);
     });
     this.chatService.loginMessage$.subscribe(participant => {
-      console.log(participant);
+      this.participants.push(participant);
     });
     this.chatService.logoutMessage$.subscribe(participant => {
-      console.log(participant);
+      const participantInList = this.participants.find(p => p.sessionId === participant.sessionId);
+      const index = this.participants.indexOf(participantInList);
+      this.participants.splice(index, 1);
     });
     this.chatService.participants$.subscribe(participants => {
-      console.log(participants);
+      this.participants = participants;
     });
-    this.chatService.participantUpdate$.subscribe(participant => console.log(participant));
+    this.chatService.participantUpdate$.subscribe(participant => {
+      const participantInList = this.participants.find(p => p.sessionId === participant.sessionId);
+      participantInList.username = participant.username;
+    });
   }
 
   onSendMessage() {

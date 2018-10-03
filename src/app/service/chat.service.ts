@@ -3,6 +3,7 @@ import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
 import {ReplaySubject} from 'rxjs/ReplaySubject';
 import {ChatParticipant} from '../dto/chat-participant';
+import {ChatMessage} from '../dto/chat-message';
 
 @Injectable()
 export class ChatService {
@@ -11,7 +12,7 @@ export class ChatService {
   private stompClient;
   private _sessionId: string;
   // Events
-  private receivedMessage = new ReplaySubject<any>();
+  private receivedMessage = new ReplaySubject<ChatMessage>();
   receivedMessage$ = this.receivedMessage.asObservable();
   private loginMessage = new ReplaySubject<ChatParticipant>();
   loginMessage$ = this.loginMessage.asObservable();
@@ -19,7 +20,7 @@ export class ChatService {
   logoutMessage$ = this.logoutMessage.asObservable();
   private participants = new ReplaySubject<Array<ChatParticipant>>();
   participants$ = this.participants.asObservable();
-  private participantUpdate = new ReplaySubject<Array<ChatParticipant>>();
+  private participantUpdate = new ReplaySubject<ChatParticipant>();
   participantUpdate$ = this.participantUpdate.asObservable();
 
   constructor() {
@@ -40,7 +41,7 @@ export class ChatService {
   private initReceivedMessages() {
     this.stompClient.subscribe('/chat', (msg) => {
       if (msg.body) {
-        this.receivedMessage.next(msg.body);
+        this.receivedMessage.next(JSON.parse(msg.body));
       }
     });
   }
@@ -73,8 +74,6 @@ export class ChatService {
   }
 
   notifyParticipantUpdate(chatParticipant: ChatParticipant) {
-    console.log('Sending udate');
-    console.log(chatParticipant);
     this.stompClient.send('/app/participant/update', {}, JSON.stringify(chatParticipant));
   }
 
