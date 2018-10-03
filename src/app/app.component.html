@@ -1,18 +1,10 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <div style="text-align:center">
   <h1>
-    Chat @Prox
+    Chat @ Prox
   </h1>
 </div>
 <div>
-  <h2>Messages</h2>
-  <p *ngFor="let message of messages"> {{ message.username + ' say ' + message.message }} </p>
-  <form>
-    <input type="text" [(ngModel)]="messageToSend" name="message">
-    <button (click)="onSendMessage()">Send message</button>
-  </form>
-  <h2>Settings</h2>
-  <app-user-settings></app-user-settings>
-  <h2>Participants</h2>
-  <app-participant *ngFor="let participant of participants" [participant]="participant"></app-participant>
+  <app-connecting *ngIf="!chatService.isConnected()"></app-connecting>
+  <app-connected *ngIf="chatService.isConnected()"></app-connected>
 </div>

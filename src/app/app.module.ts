@@ -5,12 +5,16 @@ import { FormsModule } from '@angular/forms';
 import {ChatService} from './service/chat.service';
 import { UserSettingsComponent } from './user-settings/user-settings.component';
 import { ParticipantComponent } from './participant/participant.component';
+import { ConnectingComponent } from './connecting/connecting.component';
+import { ConnectedComponent } from './connected/connected.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     UserSettingsComponent,
-    ParticipantComponent
+    ParticipantComponent,
+    ConnectingComponent,
+    ConnectedComponent
   ],
   imports: [
     BrowserModule,

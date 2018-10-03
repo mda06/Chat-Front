@@ -77,6 +77,10 @@ export class ChatService {
     this.stompClient.send('/app/participant/update', {}, JSON.stringify(chatParticipant));
   }
 
+  isConnected(): boolean {
+    return this.stompClient != null && this.stompClient.connected;
+  }
+
   get sessionId(): string {
     return this._sessionId;
   }
