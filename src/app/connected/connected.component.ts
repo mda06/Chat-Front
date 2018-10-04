@@ -21,6 +21,13 @@ export class ConnectedComponent {
   initChat() {
     this.chatService.rooms$.subscribe(rooms => {
       this.rooms = rooms;
+      this.rooms.forEach(room => {
+        this.chatService.subscribeToRoom(room.id, msg => {
+          if (msg.body) {
+            room.messages.push(JSON.parse(msg.body));
+          }
+        });
+      });
     });
   }
 
