@@ -10,6 +10,12 @@
             <p>{{ room.name }}</p>
           </div>
         </div>
+        <form class="mt-2">
+          <div class="form-group">
+            <input class="form-control" type="text" [(ngModel)]="newRoomName" name="newRoomName" placeholder="Funny">
+            <button class="btn btn-primary" (click)="onNewRoomCreated()">Add</button>
+          </div>
+        </form>
       </div>
       <app-participant class="container-fluid"></app-participant>
     </aside>

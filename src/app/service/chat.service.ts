@@ -27,6 +27,8 @@ export class ChatService {
   participantUpdate$ = this.participantUpdate.asObservable();
   private rooms = new ReplaySubject<Array<Room>>();
   rooms$ = this.rooms.asObservable();
+  private roomAdded = new ReplaySubject<Room>();
+  roomAdded$ = this.roomAdded.asObservable();
 
   constructor() {
   }
@@ -82,6 +84,11 @@ export class ChatService {
         this.rooms.next(JSON.parse(msg.body));
       }
     });
+    this.stompClient.subscribe('/room/created', msg => {
+      if (msg.body) {
+        this.roomAdded.next(JSON.parse(msg.body));
+      }
+    });
   }
 
   subscribeToRoom(roomId: number, callback) {
@@ -90,6 +97,10 @@ export class ChatService {
 
   sendMessageToRoom(msg: string, roomId: number) {
     this.stompClient.send('/app/room/send/' + roomId, {}, msg);
+  }
+
+  addNewRoom(roomName: string) {
+    this.stompClient.send('/app/room/add', {}, roomName);
   }
 
   // Not used, maybe can be used for a general messages?

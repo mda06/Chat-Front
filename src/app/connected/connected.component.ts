@@ -9,6 +9,7 @@ import {isNullOrUndefined} from 'util';
   styleUrls: ['./connected.component.css']
 })
 export class ConnectedComponent {
+  private newRoomName = '';
   private rooms: Array<Room> = [];
   private selectedRoom: Room;
 
@@ -27,6 +28,14 @@ export class ConnectedComponent {
         });
       });
     });
+    this.chatService.roomAdded$.subscribe(room => {
+      this.rooms.push(room);
+      this.chatService.subscribeToRoom(room.id, msg => {
+        if (msg.body) {
+          room.messages.push(JSON.parse(msg.body));
+        }
+      });
+    });
   }
 
   onRoomSelected(room: Room) {
@@ -38,5 +47,10 @@ export class ConnectedComponent {
       return false;
     }
     return this.selectedRoom.id === room.id;
+  }
+
+  onNewRoomCreated() {
+    this.chatService.addNewRoom(this.newRoomName);
+    this.newRoomName = '';
   }
 }
