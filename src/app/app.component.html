@@ -1,10 +1,6 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Chat @ Prox
-  </h1>
-</div>
-<div>
-  <app-connecting *ngIf="!chatService.isConnected()"></app-connecting>
-  <app-connected *ngIf="chatService.isConnected()"></app-connected>
+<div class="container-fluid">
+  <h1 class="text-center">Chat @ Prox</h1>
+  <app-connecting class="row" *ngIf="!chatService.isConnected()"></app-connecting>
+  <app-connected class="row" *ngIf="chatService.isConnected()"></app-connected>
 </div>

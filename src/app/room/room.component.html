@@ -1,4 +1,13 @@
 <div *ngIf="room">
   <h3>{{ room.name }}</h3>
   <p *ngFor="let message of room.messages"> {{ message.username + ' says ' + message.message }} </p>
+
+  <form>
+    <div class="form-group row">
+      <div class="col-sm-10">
+        <input class="form-control" type="text" [(ngModel)]="messageToSend" name="message" placeholder="Hi !">
+      </div>
+      <button class="col-sm-2 btn btn-primary" (click)="onSendMessage()">Send message</button>
+    </div>
+  </form>
 </div>

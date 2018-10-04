@@ -44,6 +44,7 @@ export class ChatService {
     });
   }
 
+  // See SendMessage
   private initReceivedMessages() {
     this.stompClient.subscribe('/chat', (msg) => {
       if (msg.body) {
@@ -91,6 +92,7 @@ export class ChatService {
     this.stompClient.send('/app/room/send/' + roomId, {}, msg);
   }
 
+  // Not used, maybe can be used for a general messages?
   sendMessage(msg: string) {
     this.stompClient.send('/app/send/message' , {}, msg);
   }

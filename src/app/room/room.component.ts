@@ -1,8 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Room} from '../dto/room';
 import {ChatService} from '../service/chat.service';
-import {Subscription} from 'rxjs/Subscription';
-
 @Component({
   selector: 'app-room',
   templateUrl: './room.component.html',
@@ -10,6 +8,7 @@ import {Subscription} from 'rxjs/Subscription';
 })
 export class RoomComponent implements OnInit {
   private _room: Room;
+  private messageToSend = '';
   constructor(private chatService: ChatService) { }
 
   ngOnInit() {
@@ -26,8 +25,12 @@ export class RoomComponent implements OnInit {
     });
   }
 
+  onSendMessage() {
+    this.chatService.sendMessageToRoom(this.messageToSend, this._room.id);
+    this.messageToSend = '';
+  }
+
   get room(): Room {
     return this._room;
   }
-
 }

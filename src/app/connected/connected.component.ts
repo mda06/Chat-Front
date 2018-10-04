@@ -3,6 +3,7 @@ import {ChatMessage} from '../dto/chat-message';
 import {ChatParticipant} from '../dto/chat-participant';
 import {ChatService} from '../service/chat.service';
 import {Room} from '../dto/room';
+import {isNullOrUndefined} from 'util';
 
 @Component({
   selector: 'app-connected',
@@ -10,9 +11,6 @@ import {Room} from '../dto/room';
   styleUrls: ['./connected.component.css']
 })
 export class ConnectedComponent {
-  private messageToSend = '';
-  private roomToSend = 1;
-  private messages: Array<ChatMessage> = [];
   private rooms: Array<Room> = [];
   private selectedRoom: Room;
 
@@ -21,21 +19,19 @@ export class ConnectedComponent {
   }
 
   initChat() {
-    this.chatService.receivedMessage$.subscribe(msg => {
-      this.messages.push(msg);
-    });
     this.chatService.rooms$.subscribe(rooms => {
       this.rooms = rooms;
     });
   }
 
-  onSendMessage() {
-    // this.chatService.sendMessage(this.messageToSend);
-    this.chatService.sendMessageToRoom(this.messageToSend, this.roomToSend);
-    this.messageToSend = '';
-  }
-
   onRoomSelected(room: Room) {
     this.selectedRoom = room;
+  }
+
+  isActiveRoom(room: Room): boolean {
+    if (isNullOrUndefined(this.selectedRoom)) {
+      return false;
+    }
+    return this.selectedRoom.id === room.id;
   }
 }
