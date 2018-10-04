@@ -3,8 +3,13 @@
   <p *ngFor="let message of messages"> {{ message.username + ' say ' + message.message }} </p>
   <form>
     <input type="text" [(ngModel)]="messageToSend" name="message">
+    <input type="text" [(ngModel)]="roomToSend" name="roomToSend">
     <button (click)="onSendMessage()">Send message</button>
   </form>
+  <h2>Rooms</h2>
+  <div *ngFor="let room of rooms" class="room" (click)="onRoomSelected(room)">
+    <p>{{ room.name }}</p>
+  </div>
   <app-room *ngIf="selectedRoom" [room]="selectedRoom"></app-room>
   <app-user-settings></app-user-settings>
   <app-participant></app-participant>

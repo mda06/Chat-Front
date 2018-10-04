@@ -25,6 +25,8 @@ export class ChatService {
   participants$ = this.participants.asObservable();
   private participantUpdate = new ReplaySubject<ChatParticipant>();
   participantUpdate$ = this.participantUpdate.asObservable();
+  private rooms = new ReplaySubject<Array<Room>>();
+  rooms$ = this.rooms.asObservable();
 
   constructor() {
   }
@@ -38,6 +40,7 @@ export class ChatService {
       console.log('Connected as ', that._sessionId);
       that.initReceivedMessages();
       that.initParticipants();
+      that.initRooms();
     });
   }
 
@@ -72,8 +75,25 @@ export class ChatService {
     });
   }
 
+  private initRooms() {
+    this.stompClient.subscribe('/app/room/all', msg => {
+      if (msg.body) {
+        this.rooms.next(JSON.parse(msg.body));
+      }
+    });
+  }
+
   subscribeToRoom(roomId: number): Observable<Room> {
-    return this.stompClient.subscribe('/room/id' + roomId);
+    return new Observable<Room>((observer) => {
+      this.stompClient.subscribe('/room/receive/' + roomId, msg => {
+        observer.next(JSON.parse(msg.body));
+        observer.complete();
+      }, err => observer.error(err));
+    });
+  }
+
+  sendMessageToRoom(msg: string, roomId: number) {
+    this.stompClient.send('/app/room/send/' + roomId, {}, msg);
   }
 
   sendMessage(msg: string) {

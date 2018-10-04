@@ -9,13 +9,23 @@ import {ChatService} from '../service/chat.service';
 })
 export class RoomComponent implements OnInit {
 
-  @Input() room: Room;
+  private _room: Room;
   constructor(private chatService: ChatService) { }
 
   ngOnInit() {
-    this.chatService.subscribeToRoom(this.room.id).subscribe(msg => {
-      console.log('Message comming to the room ', this.room.name, ': ', msg);
+    console.log('Init');
+  }
+
+  @Input()
+  set room(room: Room) {
+    this._room = room;
+    this.chatService.subscribeToRoom(this._room.id).subscribe(msg => {
+      console.log('Message comming to the room ', this._room.name, ': ', msg);
     });
+  }
+
+  get room(): Room {
+    return this._room;
   }
 
 }

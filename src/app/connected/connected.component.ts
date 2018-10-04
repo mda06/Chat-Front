@@ -11,6 +11,7 @@ import {Room} from '../dto/room';
 })
 export class ConnectedComponent {
   private messageToSend = '';
+  private roomToSend = 1;
   private messages: Array<ChatMessage> = [];
   private rooms: Array<Room> = [];
   private selectedRoom: Room;
@@ -20,15 +21,21 @@ export class ConnectedComponent {
   }
 
   initChat() {
-    this.selectedRoom = {id: 13, name: 'General', messages: []};
     this.chatService.receivedMessage$.subscribe(msg => {
       this.messages.push(msg);
+    });
+    this.chatService.rooms$.subscribe(rooms => {
+      this.rooms = rooms;
     });
   }
 
   onSendMessage() {
-    this.chatService.sendMessage(this.messageToSend);
+    // this.chatService.sendMessage(this.messageToSend);
+    this.chatService.sendMessageToRoom(this.messageToSend, this.roomToSend);
     this.messageToSend = '';
   }
 
+  onRoomSelected(room: Room) {
+    this.selectedRoom = room;
+  }
 }
