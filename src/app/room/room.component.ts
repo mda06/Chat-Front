@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Room} from '../dto/room';
 import {ChatService} from '../service/chat.service';
+import {Subscription} from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-room',
@@ -8,19 +9,20 @@ import {ChatService} from '../service/chat.service';
   styleUrls: ['./room.component.css']
 })
 export class RoomComponent implements OnInit {
-
   private _room: Room;
   constructor(private chatService: ChatService) { }
 
   ngOnInit() {
-    console.log('Init');
   }
 
   @Input()
   set room(room: Room) {
     this._room = room;
-    this.chatService.subscribeToRoom(this._room.id).subscribe(msg => {
-      console.log('Message comming to the room ', this._room.name, ': ', msg);
+    console.log('Setting the room.');
+    this.chatService.subscribeToRoom(this._room.id, msg => {
+      if (msg.body) {
+        this._room.messages.push(JSON.parse(msg.body));
+      }
     });
   }
 

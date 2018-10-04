@@ -83,13 +83,8 @@ export class ChatService {
     });
   }
 
-  subscribeToRoom(roomId: number): Observable<Room> {
-    return new Observable<Room>((observer) => {
-      this.stompClient.subscribe('/room/receive/' + roomId, msg => {
-        observer.next(JSON.parse(msg.body));
-        observer.complete();
-      }, err => observer.error(err));
-    });
+  subscribeToRoom(roomId: number, callback) {
+    this.stompClient.subscribe('/room/receive/' + roomId, callback);
   }
 
   sendMessageToRoom(msg: string, roomId: number) {
