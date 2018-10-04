@@ -1,0 +1,11 @@
+.timestamp {
+  color: lightgray;
+}
+
+#messages {
+  min-height: 350px;
+  padding: 5px;
+  margin-bottom: 5px;
+  border: 2px #00ffff solid;
+  border-radius: 10px;
+}

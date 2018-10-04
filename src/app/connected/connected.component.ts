@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import {ChatMessage} from '../dto/chat-message';
-import {ChatParticipant} from '../dto/chat-participant';
 import {ChatService} from '../service/chat.service';
 import {Room} from '../dto/room';
 import {isNullOrUndefined} from 'util';
